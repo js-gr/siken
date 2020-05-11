@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>アプリ起動サンプル</title>
+</head>
+<body>
+
+    <div style="width: 0; height: 0; overflow: hidden;">
+        <iframe id="launch_frame" name="launch_frame"> </iframe>
+    </div>
+
+    <a href="../index.html">サイトを開く</a>
+
+    <script>
+        // アプリを開く。アプリがインストールされていなければサイトを開く。
+        function launchApp() {
+            var IOS_SCHEME = '../eror/iphone.html';
+            var IOS_STORE = '../eror/iphone.html';
+            var ANDROID_SCHEME = 'com.goyal.website2apk/.MainActivity';
+            var ANDROID_PACKAGE = 'Androidのパッケージ名をここに入れるべし！';
+            var PC_SITE = '../error/iphone.html'
+
+            var userAgent = navigator.userAgent.toLowerCase();
+            
+            // Android端末ならアプリを開くかGoogle Playを開く。
+            if (userAgent.search(/android/) > -1) {
+                document.location = 'intent://#Intent;scheme=' + ANDROID_SCHEME
+                        + ';package=' + ANDROID_PACKAGE + ';end';
+            }
+            // その他・不明・PCなどの場合はサイトを開く。
+            else {
+                document.location = PC_SITE;
+            }
+        }
+
+        // ページ読み込み時に実行
+        window.onload = function() {
+            launchApp();
+        }
+    </script>
+</body>
+</html>
