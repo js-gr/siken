@@ -118,6 +118,50 @@
   
   })();
   
+  // JavaScriptの更新
+document.addEventListener('DOMContentLoaded', function() {
+  var maparea = document.querySelector('.maparea');
+  var scale = 1;
+  var lastTouchEnd = 0;
+
+  maparea.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+    }
+  });
+
+  maparea.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      var touch1 = e.touches[0];
+      var touch2 = e.touches[1];
+      var distance = Math.sqrt(
+        (touch1.pageX - touch2.pageX) * (touch1.pageX - touch2.pageX) +
+        (touch1.pageY - touch2.pageY) * (touch1.pageY - touch2.pageY)
+      );
+
+      if (scale * distance / 100 > 1) {
+        maparea.style.transform = 'scale(' + (scale * distance / 100) + ')';
+      }
+    }
+  });
+
+  maparea.addEventListener('touchend', function(e) {
+    if (e.touches.length < 2) {
+      lastTouchEnd = e.timeStamp;
+    }
+  });
+
+  // ダブルタップによるズームを防ぐ
+  maparea.addEventListener('touchend', function(e) {
+    var now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+});
+
   // マウスホイールでの移動
   document.addEventListener('DOMContentLoaded', function() {
   var container = document.querySelector('.maparea');
