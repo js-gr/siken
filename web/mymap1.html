@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Document</title>
+        <style>
+        .container {
+            position: relative;
+            width:100%;
+            height:100%;
+        }
+        
+        .image1 {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .image2 {
+            position: absolute;
+            width:10vw;
+            left: 500px;
+            top: 1000px;
+            z-index: 2;
+        }
+    </style>
+    <script src="./dragscroll2.js"></script>
+    </head>
+<body>
+    <div class="container dragscroll">
+        <img src="./japanmap.png" alt="Image 1" class="image1">
+        <img src="./pin.png" alt="Image 2" class="image2">
+    </div>
+    <script>
+        scrollTo(500, 500);
+    </script>
+</body>
+</html>

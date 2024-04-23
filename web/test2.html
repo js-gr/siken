@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Drag Scroll Example</title>
+<style>
+    body{
+        margin: 0px;
+        width:100vw;
+        height:100vh;
+    }
+  .dragscroll {
+    overflow: auto;
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden;
+  }
+  .dragscroll:active {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+  }
+</style>
+</head>
+<body >
+
+<div class="dragscroll">
+  <img src="./japanmap.png" alt="Draggable Content" draggable="false">
+</div>
+
+<script>
+(function () {
+  var _element = document.querySelector('.dragscroll');
+  var _isDown = false;
+  var _startX, _startY;
+  var _scrollLeft, _scrollTop;
+
+  _element.addEventListener('mousedown', function(e) {
+    _isDown = true;
+    _element.classList.add('active');
+    _startX = e.pageX - _element.offsetLeft;
+    _startY = e.pageY - _element.offsetTop;
+    _scrollLeft = _element.scrollLeft;
+    _scrollTop = _element.scrollTop;
+  });
+
+  _element.addEventListener('mouseleave', function() {
+    _isDown = false;
+    _element.classList.remove('active');
+  });
+
+  _element.addEventListener('mouseup', function() {
+    _isDown = false;
+    _element.classList.remove('active');
+  });
+
+  _element.addEventListener('mousemove', function(e) {
+    if (!_isDown) return;
+    e.preventDefault();
+    var x = e.pageX - _element.offsetLeft;
+    var y = e.pageY - _element.offsetTop;
+    var walkX = (x - _startX) * 1.5; // 横スクロールの速度
+    var walkY = (y - _startY) * 1.5; // 縦スクロールの速度
+    _element.scrollLeft = _scrollLeft - walkX;
+    _element.scrollTop = _scrollTop - walkY;
+  });
+
+})();
+</script>
+
+</body>
+</html>
