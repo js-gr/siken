@@ -2,25 +2,25 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
 <title>Drag Scroll Example</title>
 <style>
     body{
         margin: 0px;
         width:100vw;
         height:100vh;
+        user-select: none;
+    }
+    .maparea{
+  position: relative;
     }
   .dragscroll {
     overflow: auto;
     cursor: grab;
     cursor: -webkit-grab;
     cursor: -moz-grab;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+
     
     width: 100vw; 
     height: 100vh; 
@@ -31,56 +31,136 @@
     cursor: -webkit-grabbing;
     cursor: -moz-grabbing;
   }
+  @media (hover: none) and (pointer: coarse) {
+  .dragscroll {
+    cursor: auto; /* タッチスクリーンデバイスではデフォルトのカーソルを使用 */
+  }
+  .dragscroll:active {
+    cursor: auto;
+  }
+}
+
+.map{
+  z-index: 0;
+}
+.pin{
+  z-index: 10;
+  position: absolute;
+  left: 300px;
+  top:1200px;
+}
 </style>
 </head>
-<body >
+<body>
 
-<div class="dragscroll">
-  <img src="./japanmap.png" alt="Draggable Content" draggable="false">
+<div class="maparea dragscroll">
+  <img src="./japanmap.png" class="map" alt="Floor Map" draggable="false">
+  <img src="./pin.png" width="50px" class="pin" draggable="false">
 </div>
 <script>
-    (function () {
-      // タッチスクリーンデバイスかどうかをチェック
-      var isTouchDevice = 'ontouchstart' in document.documentElement;
-    
-      if (!isTouchDevice) {
-        var _element = document.querySelector('.dragscroll');
-        var _isDown = false;
-        var _startX, _startY;
-        var _scrollLeft, _scrollTop;
-    
-        _element.addEventListener('mousedown', function(e) {
-          _isDown = true;
-          _element.classList.add('active');
-          _startX = e.pageX - _element.offsetLeft;
-          _startY = e.pageY - _element.offsetTop;
-          _scrollLeft = _element.scrollLeft;
-          _scrollTop = _element.scrollTop;
-        });
-    
-        _element.addEventListener('mouseleave', function() {
-          _isDown = false;
-          _element.classList.remove('active');
-        });
-    
-        _element.addEventListener('mouseup', function() {
-          _isDown = false;
-          _element.classList.remove('active');
-        });
-    
-        _element.addEventListener('mousemove', function(e) {
-          if (!_isDown) return;
-          e.preventDefault();
-          var x = e.pageX - _element.offsetLeft;
-          var y = e.pageY - _element.offsetTop;
-          var walkX = (x - _startX) * 1.5; // 横スクロールの速度
-          var walkY = (y - _startY) * 1.5; // 縦スクロールの速度
-          _element.scrollLeft = _scrollLeft - walkX;
-          _element.scrollTop = _scrollTop - walkY;
-        });
-      }
-    })();
-    </script>
+  (function () {
+    var _element = document.querySelector('.dragscroll');
+    var _isDown = false;
+    var _startX, _startY;
+    var _scrollLeft, _scrollTop;
+  
+    // マウスイベント用のリスナー
+    _element.addEventListener('mousedown', function(e) {
+      _isDown = true;
+      _startX = e.pageX - _element.offsetLeft;
+      _startY = e.pageY - _element.offsetTop;
+      _scrollLeft = _element.scrollLeft;
+      _scrollTop = _element.scrollTop;
+    });
+  
+    _element.addEventListener('mouseup', function() {
+      _isDown = false;
+    });
+  
+    _element.addEventListener('mouseleave', function() {
+      _isDown = false;
+    });
+  
+    _element.addEventListener('mousemove', function(e) {
+      if (!_isDown) return;
+      e.preventDefault();
+      var x = e.pageX - _element.offsetLeft;
+      var y = e.pageY - _element.offsetTop;
+      var walkX = (x - _startX) * 1.5; // 横スクロールの速度
+      var walkY = (y - _startY) * 1.5; // 縦スクロールの速度
+      _element.scrollLeft = _scrollLeft - walkX;
+      _element.scrollTop = _scrollTop - walkY;
+    });
+  
+    // タッチイベント用のリスナー
+    _element.addEventListener('touchstart', function(e) {
+      _isDown = true;
+      _startX = e.touches[0].pageX - _element.offsetLeft;
+      _startY = e.touches[0].pageY - _element.offsetTop;
+      _scrollLeft = _element.scrollLeft;
+      _scrollTop = _element.scrollTop;
+    });
+  
+    _element.addEventListener('touchend', function() {
+      _isDown = false;
+    });
+  
+    _element.addEventListener('touchmove', function(e) {
+      if (!_isDown) return;
+      e.preventDefault();
+      var x = e.touches[0].pageX - _element.offsetLeft;
+      var y = e.touches[0].pageY - _element.offsetTop;
+      var walkX = (x - _startX) * 1.5; // 横スクロールの速度
+      var walkY = (y - _startY) * 1.5; // 縦スクロールの速度
+      _element.scrollLeft = _scrollLeft - walkX;
+      _element.scrollTop = _scrollTop - walkY;
+    });
+  
+  })();
+  
+  // マウスホイールでの移動
+  document.addEventListener('DOMContentLoaded', function() {
+  var container = document.querySelector('.maparea');
+
+  container.addEventListener('wheel', function(e) {
+    // デフォルトのスクロール動作を防止
+    e.preventDefault();
+
+    // 横スクロールの速度を設定
+    var deltaX = e.deltaY * 0.5; // 垂直スクロールを横スクロールに変換
+    var deltaY = e.deltaY * 0.5; // 垂直スクロールの速度
+
+    // スクロール位置を更新
+    // container.scrollLeft += deltaX;
+    container.scrollTop += deltaY;
+  });
+});
+
+// キーボードでの操作
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.querySelector('.maparea');
+
+  // キーボードイベントのリスナーを追加
+  window.addEventListener('keydown', function(e) {
+    switch(e.keyCode) {
+      case 37: // 左矢印キー
+        container.scrollLeft -= 10;
+        break;
+      case 38: // 上矢印キー
+        container.scrollTop -= 10;
+        break;
+      case 39: // 右矢印キー
+        container.scrollLeft += 10;
+        break;
+      case 40: // 下矢印キー
+        container.scrollTop += 10;
+        break;
+    }
+  });
+});
+
+
+  </script>
 
 </body>
 </html>
