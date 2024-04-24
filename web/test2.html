@@ -13,9 +13,18 @@
         height:100dvh;
         user-select: none;
     }
+    .container{
+      position: relative;
+      width: 100vw; 
+      height: 100vh; 
+      height: 100dvh;
+    }
     .maparea{
-  position: relative;
+  position: absolute;
   transform-origin: left top;
+  width: 100vw; 
+  height: 100vh; 
+  height: 100dvh;
 
     }
   .dragscroll {
@@ -24,11 +33,7 @@
     cursor: -webkit-grab;
     cursor: -moz-grab;
 
-    
-    width: 100vw; 
-    height: 100vh; 
-    height: 100dvh;
-    overflow: hidden;
+    overflow: auto;
   }
   .dragscroll:active {
     cursor: grabbing;
@@ -60,11 +65,11 @@
 </style>
 </head>
 <body>
-
-<div class="maparea dragscroll">
+<div class="container dragscroll">
+<div class="maparea ">
   <img src="./japanmap.png" class="map" alt="Floor Map" draggable="false">
   <img src="./pin.png" width="50px" class="pin" id="pin1" draggable="false">
-</div>
+</div></div>
 <script>
   (function () {
     var _element = document.querySelector('.dragscroll');
@@ -256,6 +261,22 @@ document.addEventListener('DOMContentLoaded', function() {
   maparea.scrollTop = centerY;
 });
 
+// document.addEventListener('DOMContentLoaded', function() {
+//   var image = document.querySelector('.map');
+//   var container = document.querySelector('.maparea');
+
+//   // クリックまたはタップイベントのリスナーを追加
+//   image.addEventListener('click', function(e) {
+//     var rect = container.getBoundingClientRect();
+//     var offsetX = e.clientX - rect.left;
+//     var offsetY = e.clientY - rect.top;
+
+//     // クリックまたはタップした位置を中心にズーム
+//     var scale = 2; // 拡大率を調整
+//     container.style.transformOrigin = offsetX + 'px ' + offsetY + 'px';
+//     container.style.transform = 'scale(' + scale + ')';
+//   });
+// });
 
   </script>
 
