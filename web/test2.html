@@ -15,6 +15,8 @@
     }
     .maparea{
   position: relative;
+  transform-origin: left top;
+
     }
   .dragscroll {
     overflow: auto;
@@ -44,6 +46,7 @@
     left: 300px;
     top:1200px;
   }
+
   @media (hover: none) and (pointer: coarse) {
   .dragscroll {
     cursor: auto; /* タッチスクリーンデバイスではデフォルトのカーソルを使用 */
@@ -214,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+// 読み込み時中央を表示
 window.addEventListener('load', function() {
   var maparea = document.querySelector('.maparea');
   var image = document.querySelector('.maparea .map');
