@@ -133,11 +133,11 @@
   
   // JavaScriptの更新
   document.addEventListener('DOMContentLoaded', function() {
-  var maparea = document.querySelector('.maparea');
-  var scale = 1;
-  var lastTouchEnd = 0;
-  var centerX = maparea.clientWidth / 2; // 画像の中心X座標
-  var centerY = maparea.clientHeight / 2; // 画像の中心Y座標
+  let maparea = document.querySelector('.maparea');
+  let scale = 1;
+  let lastTouchEnd = 0;
+  let centerX = maparea.clientWidth / 2; // 画像の中心X座標
+  let centerY = maparea.clientHeight / 2; // 画像の中心Y座標
 
   maparea.addEventListener('touchstart', function(e) {
     if (e.touches.length === 2) {
@@ -148,9 +148,9 @@
   maparea.addEventListener('touchmove', function(e) {
     if (e.touches.length === 2) {
       e.preventDefault();
-      var touch1 = e.touches[0];
-      var touch2 = e.touches[1];
-      var distance = Math.sqrt(
+      let touch1 = e.touches[0];
+      let touch2 = e.touches[1];
+      let distance = Math.sqrt(
         (touch1.pageX - touch2.pageX) * (touch1.pageX - touch2.pageX) +
         (touch1.pageY - touch2.pageY) * (touch1.pageY - touch2.pageY)
       );
@@ -173,7 +173,7 @@
 
   // ダブルタップによるズームを防ぐ
   maparea.addEventListener('touchend', function(e) {
-    var now = (new Date()).getTime();
+    let now = (new Date()).getTime();
     if (now - lastTouchEnd <= 300) {
       e.preventDefault();
     }
@@ -183,7 +183,7 @@
 
   // マウスホイールでの移動
   document.addEventListener('DOMContentLoaded', function() {
-  var container = document.querySelector('.maparea');
+  let container = document.querySelector('.maparea');
 
   container.addEventListener('wheel', function(e) {
     // デフォルトのスクロール動作を防止
@@ -201,7 +201,7 @@
 
 // キーボードでの操作
 document.addEventListener('DOMContentLoaded', function() {
-  var container = document.querySelector('.maparea');
+  let container = document.querySelector('.container');
 
   // キーボードイベントのリスナーを追加
   window.addEventListener('keydown', function(e) {
@@ -224,18 +224,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ページを開いたとき中央を表示
 document.addEventListener('DOMContentLoaded', function() {
-  var maparea = document.querySelector('.container');
-  var image = document.querySelector('.maparea .map');
+  let maparea = document.querySelector('.container');
+  let image = document.querySelector('.maparea .map');
 
   // 画像と要素の寸法を取得
-  var imageWidth = image.naturalWidth;
-  var imageHeight = image.naturalHeight;
-  var mapareaWidth = maparea.offsetWidth;
-  var mapareaHeight = maparea.offsetHeight;
+  let imageWidth = image.naturalWidth;
+  let imageHeight = image.naturalHeight;
+  let mapareaWidth = maparea.offsetWidth;
+  let mapareaHeight = maparea.offsetHeight;
 
   // 画像の中心を計算
-  var centerX = (imageWidth - mapareaWidth) / 2;
-  var centerY = (imageHeight - mapareaHeight) / 2;
+  let centerX = (imageWidth - mapareaWidth) / 2;
+  let centerY = (imageHeight - mapareaHeight) / 2;
 
   // 要素のスクロール位置を設定
   maparea.scrollLeft = centerX;
@@ -243,19 +243,33 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var image = document.querySelector('.map');
-  var container = document.querySelector('.maparea');
+  let image = document.querySelector('.map');
+  let container = document.querySelector('.maparea');
+  let maparea2 = document.querySelector('.container');
+  let dbccount = 0;
 
   // クリックまたはタップイベントのリスナーを追加
   image.addEventListener('dblclick', function(e) {
-    var rect = container.getBoundingClientRect();
-    var offsetX = e.clientX - rect.left;
-    var offsetY = e.clientY - rect.top;
+    dbccount++;      
+    let rect = container.getBoundingClientRect();
+    let offsetX = e.clientX - rect.left;
+    let offsetY = e.clientY - rect.top;
+    if (dbccount %2 == 1){
+      // クリックまたはタップした位置を中心にズーム
+      let scale = 1.5; // 拡大率を調整
+      // container.style.transformOrigin = offsetX + 'px ' + offsetY + 'px';
+      container.style.transform = 'scale(' + scale + ')';
 
-    // クリックまたはタップした位置を中心にズーム
-    var scale = 1.5; // 拡大率を調整
-    // container.style.transformOrigin = offsetX + 'px ' + offsetY + 'px';
-    container.style.transform = 'scale(' + scale + ')';
+      maparea2.scrollLeft = offsetX;
+      maparea2.scrollTop = offsetY;
+    } else {
+      let scale = 1; // 拡大率を調整
+      container.style.transform = 'scale(' + scale + ')';
+
+      maparea2.scrollLeft = offsetX;
+      maparea2.scrollTop = offsetY;
+    }
+    
   });
 });
 
