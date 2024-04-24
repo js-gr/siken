@@ -35,6 +35,8 @@
   }
   .map{
     z-index: 0;
+    width:1600px;
+    margin:5px;
   }
   .pin{
     z-index: 10;
@@ -233,7 +235,7 @@ window.addEventListener('load', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   var maparea = document.querySelector('.maparea');
-  var image = document.querySelector('.maparea .image');
+  var image = document.querySelector('.maparea .map');
 
   // 画像と要素の寸法を取得
   var imageWidth = image.naturalWidth;
