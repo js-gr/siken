@@ -25,12 +25,22 @@
     
     width: 100vw; 
     height: 100vh; 
+    height: 100dvh;
     overflow: hidden;
   }
   .dragscroll:active {
     cursor: grabbing;
     cursor: -webkit-grabbing;
     cursor: -moz-grabbing;
+  }
+  .map{
+    z-index: 0;
+  }
+  .pin{
+    z-index: 10;
+    position: absolute;
+    left: 300px;
+    top:1200px;
   }
   @media (hover: none) and (pointer: coarse) {
   .dragscroll {
@@ -41,15 +51,7 @@
   }
 }
 
-.map{
-  z-index: 0;
-}
-.pin{
-  z-index: 10;
-  position: absolute;
-  left: 300px;
-  top:1200px;
-}
+
 </style>
 </head>
 <body>
