@@ -10,6 +10,7 @@
         margin: 0px;
         width:100vw;
         height:100vh;
+        height:100dvh;
         user-select: none;
     }
     .maparea{
@@ -207,6 +208,25 @@ document.addEventListener('DOMContentLoaded', function() {
         break;
     }
   });
+});
+
+window.addEventListener('load', function() {
+  var maparea = document.querySelector('.maparea');
+  var image = document.querySelector('.maparea .map');
+
+  // 画像と要素の寸法を取得
+  var imageWidth = image.naturalWidth;
+  var imageHeight = image.naturalHeight;
+  var mapareaWidth = maparea.offsetWidth;
+  var mapareaHeight = maparea.offsetHeight;
+
+  // 画像の中心を計算
+  var centerX = (imageWidth - mapareaWidth) / 2;
+  var centerY = (imageHeight - mapareaHeight) / 2;
+
+  // 要素のスクロール位置を設定
+  maparea.scrollLeft = centerX;
+  maparea.scrollTop = centerY;
 });
 
 
