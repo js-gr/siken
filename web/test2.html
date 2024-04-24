@@ -22,9 +22,9 @@
     .maparea{
   position: absolute;
   transform-origin: left top;
-  width: 100vw; 
+  /* width: 100vw; 
   height: 100vh; 
-  height: 100dvh;
+  height: 100dvh; */
 
     }
   .dragscroll {
@@ -66,7 +66,7 @@
 </head>
 <body>
 <div class="container dragscroll">
-<div class="maparea ">
+<div class="maparea">
   <img src="./japanmap.png" class="map" alt="Floor Map" draggable="false">
   <img src="./pin.png" width="50px" class="pin" id="pin1" draggable="false">
 </div></div>
@@ -222,9 +222,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// 読み込み時中央を表示
-window.addEventListener('load', function() {
-  var maparea = document.querySelector('.maparea');
+// ページを開いたとき中央を表示
+document.addEventListener('DOMContentLoaded', function() {
+  var maparea = document.querySelector('.container');
   var image = document.querySelector('.maparea .map');
 
   // 画像と要素の寸法を取得
@@ -243,40 +243,21 @@ window.addEventListener('load', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var maparea = document.querySelector('.maparea');
-  var image = document.querySelector('.maparea .map');
+  var image = document.querySelector('.map');
+  var container = document.querySelector('.maparea');
 
-  // 画像と要素の寸法を取得
-  var imageWidth = image.naturalWidth;
-  var imageHeight = image.naturalHeight;
-  var mapareaWidth = maparea.offsetWidth;
-  var mapareaHeight = maparea.offsetHeight;
+  // クリックまたはタップイベントのリスナーを追加
+  image.addEventListener('dblclick', function(e) {
+    var rect = container.getBoundingClientRect();
+    var offsetX = e.clientX - rect.left;
+    var offsetY = e.clientY - rect.top;
 
-  // 画像の中心を計算
-  var centerX = (imageWidth - mapareaWidth) / 2;
-  var centerY = (imageHeight - mapareaHeight) / 2;
-
-  // 要素のスクロール位置を設定
-  maparea.scrollLeft = centerX;
-  maparea.scrollTop = centerY;
+    // クリックまたはタップした位置を中心にズーム
+    var scale = 1.5; // 拡大率を調整
+    // container.style.transformOrigin = offsetX + 'px ' + offsetY + 'px';
+    container.style.transform = 'scale(' + scale + ')';
+  });
 });
-
-// document.addEventListener('DOMContentLoaded', function() {
-//   var image = document.querySelector('.map');
-//   var container = document.querySelector('.maparea');
-
-//   // クリックまたはタップイベントのリスナーを追加
-//   image.addEventListener('click', function(e) {
-//     var rect = container.getBoundingClientRect();
-//     var offsetX = e.clientX - rect.left;
-//     var offsetY = e.clientY - rect.top;
-
-//     // クリックまたはタップした位置を中心にズーム
-//     var scale = 2; // 拡大率を調整
-//     container.style.transformOrigin = offsetX + 'px ' + offsetY + 'px';
-//     container.style.transform = 'scale(' + scale + ')';
-//   });
-// });
 
   </script>
 
