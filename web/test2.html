@@ -55,7 +55,7 @@
 
 <div class="maparea dragscroll">
   <img src="./japanmap.png" class="map" alt="Floor Map" draggable="false">
-  <img src="./pin.png" width="50px" class="pin" draggable="false">
+  <img src="./pin.png" width="50px" class="pin" id="pin1" draggable="false">
 </div>
 <script>
   (function () {
@@ -110,8 +110,8 @@
       e.preventDefault();
       var x = e.touches[0].pageX - _element.offsetLeft;
       var y = e.touches[0].pageY - _element.offsetTop;
-      var walkX = (x - _startX) * 1.5; // 横スクロールの速度
-      var walkY = (y - _startY) * 1.5; // 縦スクロールの速度
+      var walkX = (x - _startX) * 1; // 横スクロールの速度
+      var walkY = (y - _startY) * 1; // 縦スクロールの速度
       _element.scrollLeft = _scrollLeft - walkX;
       _element.scrollTop = _scrollTop - walkY;
     });
@@ -119,10 +119,12 @@
   })();
   
   // JavaScriptの更新
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
   var maparea = document.querySelector('.maparea');
   var scale = 1;
   var lastTouchEnd = 0;
+  var centerX = maparea.clientWidth / 2; // 画像の中心X座標
+  var centerY = maparea.clientHeight / 2; // 画像の中心Y座標
 
   maparea.addEventListener('touchstart', function(e) {
     if (e.touches.length === 2) {
@@ -141,7 +143,11 @@ document.addEventListener('DOMContentLoaded', function() {
       );
 
       if (scale * distance / 100 > 1) {
+        // ズームイン
         maparea.style.transform = 'scale(' + (scale * distance / 100) + ')';
+        // 中心位置を調整
+        maparea.scrollLeft = centerX * (scale * distance / 100) - centerX;
+        maparea.scrollTop = centerY * (scale * distance / 100) - centerY;
       }
     }
   });
