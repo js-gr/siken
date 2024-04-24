@@ -159,8 +159,8 @@
         // ズームイン
         maparea.style.transform = 'scale(' + (scale * distance / 100) + ')';
         // 中心位置を調整
-        maparea.scrollLeft = centerX * (scale * distance / 100) - centerX;
-        maparea.scrollTop = centerY * (scale * distance / 100) - centerY;
+        maparea.scrollLeft = centerX;
+        maparea.scrollTop = centerY;
       }
     }
   });
