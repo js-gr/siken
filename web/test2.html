@@ -21,7 +21,8 @@
     }
     .maparea{
   position: absolute;
-  transform-origin: left top;
+  animation: maparea 2s ease 0s infinite alternate;
+  /* transform-origin: left top; */
   /* width: 100vw; 
   height: 100vh; 
   height: 100dvh; */
@@ -150,6 +151,8 @@
       e.preventDefault();
       let touch1 = e.touches[0];
       let touch2 = e.touches[1];
+      let centerX = (touch1.pageX + touch2.pageX) / 2;
+      let centerY = (touch1.pageY + touch2.pageY) / 2;
       let distance = Math.sqrt(
         (touch1.pageX - touch2.pageX) * (touch1.pageX - touch2.pageX) +
         (touch1.pageY - touch2.pageY) * (touch1.pageY - touch2.pageY)
@@ -157,6 +160,7 @@
 
       if (scale * distance / 100 > 1) {
         // ズームイン
+        maparea.style.transformOrigin = centerX + 'px' + centerY + 'px';
         maparea.style.transform = 'scale(' + (scale * distance / 100) + ')';
         // 中心位置を調整
         maparea.scrollLeft = centerX * (scale * distance / 100) - centerX;
@@ -257,15 +261,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (dbccount %2 == 1){
       // クリックまたはタップした位置を中心にズーム
       let scale = 1.5; // 拡大率を調整
-      // container.style.transformOrigin = offsetX + 'px ' + offsetY + 'px';
+      container.style.transformOrigin = e.pageX + 'px ' + e.pageY + 'px';
       container.style.transform = 'scale(' + scale + ')';
 
       maparea2.scrollLeft = offsetX;
       maparea2.scrollTop = offsetY;
     } else {
       let scale = 1; // 拡大率を調整
+      container.style.transformOrigin = e.pageX + 'px ' + e.pageY + 'px';
       container.style.transform = 'scale(' + scale + ')';
-
       maparea2.scrollLeft = offsetX / 1.5;
       maparea2.scrollTop = offsetY / 1.5;
     }
